@@ -103,6 +103,10 @@ RCT_REMAP_METHOD(getCastState,
                  getCastStateWithResolver: (RCTPromiseResolveBlock) resolve
                  rejecter: (RCTPromiseRejectBlock) reject) {
   dispatch_async(dispatch_get_main_queue(), ^{
+    if (GCKCastContext.sharedInstance.sessionManager.hasConnectedCastSession){
+        castSession = [GCKCastContext.sharedInstance.sessionManager currentCastSession];
+        [castSession.remoteMediaClient addListener:self];
+    }
     resolve(@([GCKCastContext.sharedInstance castState]));
   });
 }
